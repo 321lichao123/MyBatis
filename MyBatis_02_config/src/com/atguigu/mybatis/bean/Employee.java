@@ -1,4 +1,6 @@
-package com.atguigu.mybatis;
+package com.atguigu.mybatis.bean;
+
+import org.apache.ibatis.type.Alias;
 
 /**
  * @ClassName Employee
@@ -7,6 +9,7 @@ package com.atguigu.mybatis;
  * @Date 2021/12/30 0:08
  * @Version 1.0
  */
+@Alias("emp")
 public class Employee {
     private Integer id;
     private String lastName;

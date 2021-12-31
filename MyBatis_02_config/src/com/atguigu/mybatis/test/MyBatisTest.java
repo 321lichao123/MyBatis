@@ -1,12 +1,13 @@
-package com.atguigu.test;
+package com.atguigu.mybatis.test;
 
-import com.atguigu.bean.Employee;
-import com.atguigu.dao.EmployeeMapper;
+import com.atguigu.mybatis.bean.Employee;
+import com.atguigu.mybatis.dao.EmployeeMapper;
+import com.atguigu.mybatis.dao.EmployeeMapperAnnotation;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
-import org.junit.Test;
+import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -83,5 +84,19 @@ public class MyBatisTest {
         Employee employee = mapper.getEmpById(1);
         System.out.println(employee);
         sqlSession.close();
+    }
+
+    @Test
+    public void test2() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        Employee employee;
+        try {
+            EmployeeMapperAnnotation mapper = sqlSession.getMapper(EmployeeMapperAnnotation.class);
+            employee = mapper.getEmpById(1);
+        } finally {
+            sqlSession.close();
+        }
+        System.out.println(employee);
     }
 }
