@@ -1,0 +1,35 @@
+当个参数：mybatis不会做特殊处理
+    #{参数名}：取出参数值
+
+多个参数
+    多个参数会被封装到一个map
+        key：param1...paramN或者参数的索引0， 1
+        #{param1}就是从map中获取指定的key的值
+    异常：
+        org.apache.ibatis.binding.BindingException:
+         Parameter 'id' not found. Available parameters are [0, 1, param1, param2]
+    操作：
+        方法： public Employee getEmpByIdAndLastName(Integer id, String lastName);
+        取值：select * from tbl_employee where id = #{id} and last_name = #{lastName}
+
+命名参数：明确指定封装参数时map的key：@Param("id")
+    多个参数会被封装一个map
+        key：使用@Param注解指定的值
+        value：：参数值
+    #{指定的key}取出对应的参数值
+
+POJO:
+    如果多个参数正好是我们业务逻辑的数据模型，我们就可以直接传入pojo
+        #{属性名}：取出传入的pojo的属性值
+
+Map：
+    如果多个参数不是业务模型中的数据，没有对应的pojo为了方便我们也可以传入map
+        #{key}:取出map中对应的值
+
+TO
+    如果多个参数不是业务模型中数据，但是经常要使用，推荐来编写一个TO(transfer object) 数据传输对象
+
+=================================思考===============================================
+##特别注意：如果是Controller（List、Set）类型或者数组
+            也会特殊处理。也是把传入的list或者数组封装在map中
+                key：Controller（controller）、List(list)、Array(array)

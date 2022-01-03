@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace: 名称空间，指定接口的全类名，将接口与select绑定了
+    id：唯一标识，
+    resultType：返回值类型
+    #{id}：从传递过来的参数中取出id值
+-->
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
+    <select id="getEmpById" resultType="emp">
+        select * from tbl_employee where id = #{id}
+    </select>
+
+    <select id="getEmpByIdAndLastName" resultType="com.atguigu.mybatis.bean.Employee">
+        <!--select * from tbl_employee where id = #{param1} and last_name = #{param2}-->
+        select * from tbl_employee where id = #{id} and last_name = #{lastName}
+    </select>
+
+    <select id="getEmpMap" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee where id = #{id} and last_name = #{lastName}
+    </select>
+    <!--
+        parameterType：参数类型、可以省略
+        获取自增主键
+            mysql支持自增主键，自增主键值的获取，mybatis也是利用statement.getGeneratedKeys()
+            useGeneratorKeys="true"使用主键获取主键值策略
+        keyProperty:指定对应的主键属性，也就是mybatis获取到主键值以后，将这个值封装给javabean的那个属性
+    -->
+    <insert id="addEmp" useGeneratedKeys="true" keyProperty="id">
+        insert into tbl_employee(last_name, email, gender) values(#{lastName}, #{email}, #{gender});
+    </insert>
+
+    <update id="updateEmp">
+        update tbl_employee set last_name=#{lastName}, email=#{email}, gender=#{gender} where id=#{id};
+    </update>
+
+    <delete id="deletedEmpById">
+        delete from tbl_employee where id=#{id};
+    </delete>
+</mapper>
