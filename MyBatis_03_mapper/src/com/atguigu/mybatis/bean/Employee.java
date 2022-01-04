@@ -15,6 +15,8 @@ public class Employee {
     private String lastName;
     private String email;
     private String gender;
+    private Integer dId;
+    private Department department;
 
     public Employee() {
     }
@@ -24,6 +26,31 @@ public class Employee {
         this.lastName = lastName;
         this.email = email;
         this.gender = gender;
+    }
+
+    public Employee(Integer id, String lastName, String email, String gender, Integer dId, Department department) {
+        this.id = id;
+        this.lastName = lastName;
+        this.email = email;
+        this.gender = gender;
+        this.dId = dId;
+        this.department = department;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public Integer getdId() {
+        return dId;
+    }
+
+    public void setdId(Integer dId) {
+        this.dId = dId;
     }
 
     public Integer getId() {
@@ -65,6 +92,8 @@ public class Employee {
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
                 ", gender='" + gender + '\'' +
+                ", dId=" + dId +
+                ", department=" + department +
                 '}';
     }
 }

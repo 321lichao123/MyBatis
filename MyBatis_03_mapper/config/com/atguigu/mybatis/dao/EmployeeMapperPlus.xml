@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.mybatis.dao.EmployeeMapperPlus">
+    <!--
+        自定义某个javaBean的封装规则：
+            type:自定义规则的Java类型
+            id：唯一id方便引用
+    -->
+    <resultMap id="employeeResultType" type="com.atguigu.mybatis.bean.Employee">
+        <!--
+            指定主键列的封装规则
+                id：定义键会底层优化
+                column：指定那一列
+                property：指定对应的javabean属性
+        -->
+        <id column="id" property="id" />
+        <!--
+            定义普通列封装规则：
+                其他列不指定列会自动封装，我们只要写resultMap就把全部的映射规则全部写上
+        -->
+        <result column="last_name" property="lastName" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+    </resultMap>
+    <!--
+        resultMap自定义结果集映射规则：
+        resultType与resultMap只能选择其中一个作为返回类型
+    -->
+    <!--resultType的演示-->
+    <!--<select id="getEmpById" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee where id = #{id}
+    </select>-->
+    <select id="getEmpById" resultMap="employeeResultType">
+        select * from tbl_employee where id = #{id}
+    </select>
+
+    <resultMap id="myDifEmp" type="com.atguigu.mybatis.bean.Employee">
+        <id column="id" property="id" />
+        <result column="last_name" property="lastName" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+        <result column="did" property="department.id" />
+        <result column="dept_name" property="department.department" />
+    </resultMap>
+    <select id="getEmpAndDeptById" resultMap="myDifEmp">
+        SELECT e.id d, e.last_name last_name, e.email email, e.gender gender, e.d_id d_id, d.id did, d.dept_name dept_name FROM tbl_employee e, tbl_dept d WHERE e.d_id = d.id AND e.id = 1;
+    </select>
+</mapper>

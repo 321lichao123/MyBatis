@@ -3,15 +3,18 @@ package com.atguigu.mybatis.test;
 import com.atguigu.mybatis.bean.Employee;
 import com.atguigu.mybatis.dao.EmployeeMapper;
 import com.atguigu.mybatis.dao.EmployeeMapperAnnotation;
+import com.atguigu.mybatis.dao.EmployeeMapperPlus;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.Test;
 
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -142,11 +145,34 @@ public class MyBatisTest {
         try {
             EmployeeMapper mapper = sqlSession.getMapper(EmployeeMapper.class);
             //Employee employee = mapper.getEmpByIdAndLastName(1, "jack");
-            Map<String, Object> map = new HashMap<>();
+            /*Map<String, Object> map = new HashMap<>();
             map.put("id", "1");
-            map.put("lastName", "jack");
+            map.put("lastName", "tom");
+            map.put("tableName", "tbl_employee");
             Employee employee = mapper.getEmpMap(map);
-            System.out.println(employee);
+            System.out.println(employee);*/
+            /*List<Employee> like = mapper.getEmpsLastNameLike("%o%");
+            for (Employee employee : like) {
+                System.out.println("employee = " + employee);
+            }*/
+            /*Map<String, Object> returnMap = mapper.getEmpByIdReturnMap(1);
+            System.out.println("returnMap = " + returnMap);*/
+            Map<Integer, Employee> lastNameReturnMap = mapper.getEmpByLastNameReturnMap("%o%");
+            System.out.println("lastNameReturnMap = " + lastNameReturnMap);
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void test5() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperPlus mapper = sqlSession.getMapper(EmployeeMapperPlus.class);
+            //Employee employee = mapper.getEmpById(1);
+            Employee employee = mapper.getEmpAndDeptById(1);
+            System.out.println("employee = " + employee);
         } finally {
             sqlSession.close();
         }
