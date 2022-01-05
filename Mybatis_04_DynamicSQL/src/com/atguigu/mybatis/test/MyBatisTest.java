@@ -4,6 +4,7 @@ import com.atguigu.mybatis.bean.Department;
 import com.atguigu.mybatis.bean.Employee;
 import com.atguigu.mybatis.dao.DepartmentMapper;
 import com.atguigu.mybatis.dao.EmployeeMapper;
+import com.atguigu.mybatis.dao.EmployeeMapperDynamicSQL;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -12,6 +13,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -56,6 +58,30 @@ public class MyBatisTest {
             Department dept = mapper.getDeptByIdStep(2);
             System.out.println(dept);
             System.out.println(dept.getEmps());
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void test02() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            Employee employee = new Employee(null, "%u%", null, null);
+            //List<Employee> emps = mapper.getEmpsByConditionIf(employee);
+            //System.out.println(emps);
+
+            /*
+                查询的时候如果某些条件没带可能导致sql的拼装出问题
+                    1、给where后面添加1=1，以后的条件都and xxx.
+                    2、mybatis使用where标签来将所有的查询条件包括在内。
+                        mybatis就会将where标签中拼装的sql，多出来的and或者or去除
+                        注意：where指挥去掉第一个多出来的and或者or
+            */
+            List<Employee> emps = mapper.getEmpsByConditionTrim(employee);
+            System.out.println(emps);
         } finally {
             sqlSession.close();
         }

@@ -6,6 +6,49 @@
 <mapper namespace="com.atguigu.mybatis.dao.EmployeeMapperDynamicSQL">
 
     <select id="getEmpsByConditionIf" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee
+            <where>
+                <if test="id!=null">
+                    id=#{id}
+                </if>
+                <if test="lastName!=null &amp;&amp; lastName!=&quot;&quot;">
+                    and last_name like #{lastName}
+                </if>
+                <if test="email!=null &amp;&amp; email.trim()!=&quot;&quot;">
+                    and email=#{email}
+                </if>
+                <if test="gender==0 or gender==1">
+                    and gender=#{gender}
+                </if>
+            </where>
+    </select>
 
+    <select id="getEmpsByConditionTrim" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee
+        <!--
+            后面多出的and或者or，where标签不能解决，使用trim标签解决
+                prefix=""：前缀 trim标签中是整个字符串拼接后的结果
+                    prefix给拼串后的整个字符串加一个前缀
+                prefixOverrides=""：
+                    前端覆盖：去掉整个字符串前面多余的字符
+                suffix="":后缀
+                    suffix给拼串后的整个字符串加一个后缀
+                suffixOverrides:
+                    后缀覆盖：去掉整个字符串后面多余的字符
+        -->
+        <trim prefix="where" suffixOverrides="and">
+            <if test="id!=null">
+                id=#{id} and
+            </if>
+            <if test="lastName!=null &amp;&amp; lastName!=&quot;&quot;">
+                last_name like #{lastName} and
+            </if>
+            <if test="email!=null &amp;&amp; email.trim()!=&quot;&quot;">
+                email=#{email} and
+            </if>
+            <if test="gender==0 or gender==1">
+                gender=#{gender}
+            </if>
+        </trim>
     </select>
 </mapper>
