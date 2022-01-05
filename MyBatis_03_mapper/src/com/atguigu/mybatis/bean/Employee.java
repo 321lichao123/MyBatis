@@ -16,7 +16,7 @@ public class Employee {
     private String email;
     private String gender;
     private Integer dId;
-    private Department department;
+    private Department dept;
 
     public Employee() {
     }
@@ -28,21 +28,21 @@ public class Employee {
         this.gender = gender;
     }
 
-    public Employee(Integer id, String lastName, String email, String gender, Integer dId, Department department) {
+    public Employee(Integer id, String lastName, String email, String gender, Integer dId, Department dept) {
         this.id = id;
         this.lastName = lastName;
         this.email = email;
         this.gender = gender;
         this.dId = dId;
-        this.department = department;
+        this.dept = dept;
     }
 
     public Department getDepartment() {
-        return department;
+        return dept;
     }
 
-    public void setDepartment(Department department) {
-        this.department = department;
+    public void setDepartment(Department dept) {
+        this.dept = dept;
     }
 
     public Integer getdId() {
@@ -93,7 +93,7 @@ public class Employee {
                 ", email='" + email + '\'' +
                 ", gender='" + gender + '\'' +
                 ", dId=" + dId +
-                ", department=" + department +
+                ", dept=" + dept +
                 '}';
     }
 }

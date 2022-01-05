@@ -20,6 +20,9 @@
     <settings>
         <!--开启驼峰转换器，将数据库的下划线的字段直接转为bean类下的大小写-->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!--开启懒加载-->
+        <setting name="lazyLoadingEnabled" value="true"/>
+        <setting name="aggressiveLazyLoading" value="false"/>
     </settings>
 
     <!--typeAliases：别名处理器，可以为我们的Java类型起别名,别名不区分大小写-->
@@ -92,7 +95,6 @@
 						比较重要的，复杂的Dao接口我们来写sql映射文件
 						不重要，简单的Dao接口为了开发快速可以使用注解；
 		-->
-        <!--<mapper resource="org/mybatis/example/BlogMapper.xml"/>-->
         <!--<mapper resource="mybatis/mapper/EmployeeMapper.xml"/>-->
         <!--<mapper class="com.atguigu.mybatis.dao.EmployeeMapper" />-->
         <!--<mapper class="com.atguigu.mybatis.dao.EmployeeMapperAnnotation" />-->

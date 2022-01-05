@@ -36,15 +36,102 @@
         select * from tbl_employee where id = #{id}
     </select>
 
+    <!-- 联合属性：级联属性封装结果集 -->
+    <!--第一种方法：-->
     <resultMap id="myDifEmp" type="com.atguigu.mybatis.bean.Employee">
         <id column="id" property="id" />
         <result column="last_name" property="lastName" />
         <result column="email" property="email" />
         <result column="gender" property="gender" />
-        <result column="did" property="department.id" />
-        <result column="dept_name" property="department.department" />
+        <result column="did" property="dept.id" />
+        <result column="dept_name" property="dept.departmentName" />
+    </resultMap>
+    <!--第二种方法：-->
+    <resultMap id="myDifEmp2" type="com.atguigu.mybatis.bean.Employee">
+        <id column="id" property="id" />
+        <result column="last_name" property="lastName" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+        <!--
+            association可以指定联合的javabean对象
+                property="dept"：指定那个属性是联合的对象
+                javaType：指定这个属性对象的类型【不能省略】
+        -->
+        <association property="dept" javaType="com.atguigu.mybatis.bean.Department">
+            <id column="did" property="id" />
+            <result column="dept_name" property="departmentName" />
+        </association>
     </resultMap>
     <select id="getEmpAndDeptById" resultMap="myDifEmp">
-        SELECT e.id d, e.last_name last_name, e.email email, e.gender gender, e.d_id d_id, d.id did, d.dept_name dept_name FROM tbl_employee e, tbl_dept d WHERE e.d_id = d.id AND e.id = 1;
+        SELECT e.id id, e.last_name last_name, e.email email, e.gender gender, e.d_id d_id, d.id did, d.dept_name dept_name FROM tbl_employee e, tbl_dept d WHERE e.d_id = d.id AND e.id = #{id};
+    </select>
+
+    <!--
+        使用association进行分步查询：
+            1、先按照员工id查询员工信息
+            2、根据员工信息中的d_id值去部门查询出部门信息
+            3、部门设置到员工信息中
+    -->
+    <resultMap id="myEmpByStep" type="com.atguigu.mybatis.bean.Employee">
+        <id column="id" property="id" />
+        <result column="last_name" property="lastName" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+        <!--
+            association:定义关联对象的封装规则
+                select：表明当前属性是调用select指定的方法查出的结果
+                column：指定那一列的值传给这个方法
+            流程：使用select指定的方法(传入column指定的这个参数的值)查出对象，并封装给property指定的属性
+        -->
+        <association property="dept" select="com.atguigu.mybatis.dao.DepartmentMapper.getDeptById" column="d_id"></association>
+    </resultMap>
+    <select id="getEmpStep" resultMap="myEmpByStep">
+        select * from tbl_employee where id = #{id}
+    </select>
+    <!--
+        可以使用延迟加载（懒加载）：按需加载
+            employee==>>> Dept
+            我们每次查询employee对象的时候都将一起查询
+            部门信息在我们使用的时候再去查询
+            分段查询的基础上加两个全局配置：
+                <setting name="lazyLoadingEnabled" value="true"/>
+                <setting name="aggressiveLazyLoading" value="false"/>
+    -->
+
+
+    <select id="getEmpsByDeptId" resultType="com.atguigu.mybatis.bean.Employee">
+        select * from tbl_employee where d_id = #{deptId}
+    </select>
+
+    <!--
+        <discriminator javaType=""></discriminator>
+        鉴别器: mybatis可以使用discriminator判断某列的值,然后根据某列的值改变封装行为
+    -->
+    <resultMap id="myEmpStep1" type="com.atguigu.mybatis.bean.Employee">
+        <id column="id" property="id" />
+        <result column="last_name" property="lastName" />
+        <result column="email" property="email" />
+        <result column="gender" property="gender" />
+        <!--
+            javaType: 列值对应的Java类型
+            column: 指定判断的列名
+        -->
+        <discriminator javaType="string" column="gender">
+            <case value="0" resultType="com.atguigu.mybatis.bean.Employee">
+                <association property="dept"
+                             select="com.atguigu.mybatis.dao.DepartmentMapper.getDeptById"
+                             column="d_id">
+                </association>
+            </case>
+            <case value="1" resultType="com.atguigu.mybatis.bean.Employee">
+                <id column="id" property="id" />
+                <result column="last_name" property="lastName" />
+                <result column="last_name" property="email" />
+                <result column="gender" property="gender" />
+            </case>
+        </discriminator>
+    </resultMap>
+    <select id="getEmpStep1" resultMap="myEmpStep1">
+        select * from tbl_employee where id = #{id}
     </select>
 </mapper>
