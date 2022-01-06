@@ -13,6 +13,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -69,7 +71,7 @@ public class MyBatisTest {
         SqlSession sqlSession = sqlSessionFactory.openSession();
         try {
             EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
-            Employee employee = new Employee(null, "%u%", null, null);
+            Employee employee = new Employee(2, "lucy", null, null);
             //List<Employee> emps = mapper.getEmpsByConditionIf(employee);
             //System.out.println(emps);
 
@@ -80,8 +82,36 @@ public class MyBatisTest {
                         mybatis就会将where标签中拼装的sql，多出来的and或者or去除
                         注意：where指挥去掉第一个多出来的and或者or
             */
-            List<Employee> emps = mapper.getEmpsByConditionTrim(employee);
-            System.out.println(emps);
+            /*List<Employee> emps = mapper.getEmpsByConditionTrim(employee);
+            System.out.println(emps);*/
+            /*List<Employee> emps = mapper.getEmpsByConditionChoose(employee);
+            for (Employee emp : emps) {
+                System.out.println(emp);
+            }*/
+
+            /*mapper.updateEmp(employee);
+            sqlSession.commit();*/
+            List<Employee> emps = mapper.getEmpsByConditionForEach(Arrays.asList(1, 2, 3, 4));
+            for (Employee emp : emps) {
+                System.out.println(emp);
+            }
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
+    public void testBatchSave() throws IOException {
+        SqlSessionFactory sqlSessionFactory = getSqlSessionFactory();
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        try {
+            EmployeeMapperDynamicSQL mapper = sqlSession.getMapper(EmployeeMapperDynamicSQL.class);
+            List<Employee> emps = new ArrayList<>();
+            emps.add(new Employee(null, "张三", "张三@126.com", "1", 1));
+            emps.add(new Employee(null, "李四", "李四@126.com", "1", 2));
+            emps.add(new Employee(null, "王五", "王五@126.com", "1", 3));
+            mapper.addEmps(emps);
+            sqlSession.commit();
         } finally {
             sqlSession.close();
         }
