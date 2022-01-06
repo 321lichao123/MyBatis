@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//com.atguigu.mybatis.org//DTD Mapper 3.0//EN"
+        "http://com.atguigu.mybatis.org/dtd/com.atguigu.mybatis-3-mapper.dtd">
 <!--
     namespace: 名称空间，指定接口的全类名，将接口与select绑定了
     id：唯一标识，

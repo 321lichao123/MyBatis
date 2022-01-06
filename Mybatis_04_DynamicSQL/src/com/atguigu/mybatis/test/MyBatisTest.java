@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * 1、接口式编程
  *      原生：    Dao  ===>>> DaoImpl
- *      mybatis: Dao ===>>> XXMapper.xml
+ *      com.atguigu.mybatis: Dao ===>>> XXMapper.xml
  * 2、sqlSession代表和数据库的一次回话；用完必须关掉
  * 3、sqlSession和connection一样都是非线程安全的。每次使用都应该去获取新对象
  * 4、mapper接口没有实现类，但是myBatis会为这个接口生成一个代理对象、
