@@ -13,7 +13,7 @@
 </head>
 <body>
     <h1>这是员工列表</h1>
-    <table>
+    <table cellpadding="1" cellspacing="1" border="1px solid #ddd">
         <tr>
             <td>id</td>
             <td>lastName</td>

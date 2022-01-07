@@ -9,7 +9,6 @@ import org.apache.ibatis.type.Alias;
  * @Date 2021/12/30 0:08
  * @Version 1.0
  */
-@Alias("emp")
 public class Employee {
     private Integer id;
     private String lastName;

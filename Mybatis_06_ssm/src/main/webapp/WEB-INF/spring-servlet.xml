@@ -13,8 +13,8 @@
 
     <!--配置视图解析器-->
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
-        <property name="suffix" value="/WEB-INF/pages/"></property>
-        <property name="prefix" value=".jsp"></property>
+        <property name="prefix" value="/WEB-INF/pages/"></property>
+        <property name="suffix" value=".jsp"></property>
     </bean>
 
     <!--开启注解器-->

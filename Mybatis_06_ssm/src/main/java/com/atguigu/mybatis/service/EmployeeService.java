@@ -1,6 +1,7 @@
 package com.atguigu.mybatis.service;
 
 import com.atguigu.mybatis.bean.Employee;
+import com.atguigu.mybatis.dao.EmployeeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +11,7 @@ import java.util.List;
 public class EmployeeService {
 
     @Autowired
-    private EmployeeService employeeMapper;
+    private EmployeeMapper employeeMapper;
 
     public List<Employee> getEmps() {
         return employeeMapper.getEmps();
