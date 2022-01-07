@@ -10,7 +10,8 @@
 -->
 <mapper namespace="com.atguigu.mybatis.dao.EmployeeMapper">
 
-    <cache></cache>
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>
+    <!--<cache eviction="FIFO" flushInterval="60000" readOnly="false" size="1024"></cache>-->
     <!--
 	eviction:缓存的回收策略：
 		• LRU – 最近最少使用的：移除最长时间不被使用的对象。
